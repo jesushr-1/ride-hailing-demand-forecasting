@@ -1,30 +1,30 @@
-## Pronóstico de la demanda de servicios de transporte
+## Ride-Hailing Demand Forecasting
 
-Análisis de series temporales | Aprendizaje automático (Machine Learning) | Python
+Time Series Analysis | Machine Learning | Python
 
-### Descripción del proyecto
+### Project Overview
 
-Sweet Lift Taxi necesita pronosticar la demanda horaria de taxis en aeropuertos para mejorar la disponibilidad de los conductores y la planificación operativa.
+Sweet Lift Taxi needs to forecast hourly taxi demand at airports to improve driver availability and operational planning.
 
-Este proyecto desarrolla y evalúa modelos de aprendizaje automático, utilizando datos históricos de solicitudes de taxis, para predecir la demanda de la hora siguiente.
+This project develops and evaluates machine learning models using historical taxi order data to predict demand for the next hour.
 
-### Conjunto de datos
+### Dataset
 
-El conjunto de datos contiene 4.416 observaciones horarias correspondientes al periodo entre marzo y agosto de 2018, e incluye marcas de tiempo y el número de solicitudes de taxis.
+The dataset contains 4,416 hourly observations from March to August 2018, including timestamps and taxi order counts.
 
-### Metodología
+### Methodology
 
-- Preparación de datos: Ordenamiento cronológico y remuestreo por horas.
+- Data Preparation: Chronological sorting and hourly resampling.
 
-- Análisis exploratorio de datos: Identificación de tendencias de demanda, patrones recurrentes y fluctuaciones.
+- Exploratory Data Analysis: Identification of demand trends, recurring patterns, and fluctuations.
 
-- Ingeniería de características: Variables basadas en el tiempo, retardos (lags) de 24 horas y una media móvil de 24 horas.
+- Feature Engineering: Time-based features, 24 hourly lag features, and a 24-hour rolling average.
 
-- Modelado: Regresión lineal, Random Forest, CatBoost y LightGBM.
+- Modeling: Linear Regression, Random Forest, CatBoost, and LightGBM.
 
-- Evaluación: División cronológica de los datos para entrenamiento, validación y prueba, utilizando la métrica RMSE.
+- Evaluation: Chronological training, validation, and test splits using RMSE.
 
-### Resultados
+### Results
 
 | Model | Validation RMSE |
 |---|---:|
@@ -41,24 +41,41 @@ Test RMSE: 41.33
 
 Target RMSE: ≤ 48
 
-Resultado: Objetivo alcanzado.
+Outcome: Target achieved.
 
-### Principales hallazgos
+**Result Interpretation:**
 
-CatBoost obtuvo el menor error de validación y logró captar los patrones generales de la demanda por horas.
+The CatBoost model achieved a test RMSE of 41.33, meeting the project's target of keeping RMSE below 48.
 
-No obstante, el modelo tendió a subestimar los picos repentinos de demanda, lo que pone de manifiesto una oportunidad para mejorar las previsiones durante los periodos de mayor actividad.
+From an operational perspective, this represents a root mean squared prediction error of 41.33 taxi orders per hour. Since RMSE penalizes larger prediction errors more heavily, this value should not be interpreted as the average absolute number of incorrectly predicted orders.
 
-### Recomendaciones para el negocio
+Although the model met the required performance target, there is still room for improvement in supporting driver allocation decisions, particularly during periods of high demand.
 
-- Utilizar las previsiones de demanda para optimizar la asignación de conductores.
-- Mantener una mayor disponibilidad de conductores durante los periodos en los que, históricamente, la demanda es elevada.
-- Realizar un seguimiento de los errores de predicción y reentrenar el modelo periódicamente con datos actualizados.
+**Validation vs. Test Performance:**
 
-### Technologías
+The CatBoost model achieved a validation RMSE of 31.02 and a test RMSE of 41.33, representing an increase of approximately 33.2%.
+
+Further error analysis showed that the model struggled particularly during high-demand periods, defined as hours with at least 211.1 taxi orders (the top 10% of observed demand in the test set).
+
+During these periods, RMSE increased to 90.11, compared with 31.56 during normal-demand hours. The mean prediction error (actual minus predicted) was +74.84 orders during high-demand periods, indicating a tendency to underestimate demand.
+
+These findings suggest that demand peaks contribute substantially to prediction errors in the test set and may help explain the difference between validation and test performance. However, the analysis does not establish that demand peaks are the sole cause of this difference.
+
+### Key Findings
+
+CatBoost achieved the lowest validation error and successfully captured general hourly demand patterns.
+
+However, the model tended to underestimate sudden demand spikes, highlighting an opportunity to improve forecasting during peak periods.
+
+### Business Recommendations
+- Use demand forecasts to improve driver allocation.
+- Maintain additional driver availability during historically high-demand periods.
+- Monitor prediction errors and periodically retrain the model with updated data.
+
+### Tools & Technologies
 
 Python | Pandas | NumPy | Matplotlib | Scikit-learn | CatBoost | LightGBM
 
-### Conclusión
+### Conclusion
 
-Este proyecto demuestra cómo la predicción de series temporales y el aprendizaje automático pueden servir de apoyo a la toma de decisiones operativas en los servicios de transporte con conductor.
+This project demonstrates how time series forecasting and machine learning can support operational decision-making in ride-hailing services.
